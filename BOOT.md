@@ -4,7 +4,7 @@
 > `00_Shared_Context/BOOT_BRIEF.md` ただ1つで、このページはそこから機械生成されています。
 > このページを編集しても正典は変わりません（次回の発行で上書きされます）。
 >
-> 内容ID: `3affebaa4d80bcb3`（正典が変わるとこの値が変わります）
+> 内容ID: `63948902bf4b7e10`（正典が変わるとこの値が変わります）
 
 ---
 
@@ -15,6 +15,7 @@
 - **キュージェ** = Gemini CLI（大規模ファイル生成・アプリ開発の主力）
 - **フヘ** = HermesAgent（秘書・司令塔・Telegram対話・タスクルーティング）
 - **アンジェ** = Antigravity IDE（UI設計・フロントエンド・GAS/Drive連携）
+- **キュウチャ** = OpenAI Codex（依頼された実装・調査・レビュー・検証／入口=`AGENTS.md` → `CODEX.md`）
 - **m.blue** = ブランドの顔（SNS交流・スケジュール投稿）
 
 ## 今の最優先（WHAT NOW）
@@ -34,6 +35,19 @@
 
 ## チーム共有メモリ（必須）
 `00_Shared_Context/SHARED_MEMORY` = 全AI共通の正典。他AIに関わる決定・状態・教訓・場所を得たら、自分専用メモリだけでなく**ここにも自律的に追記**（日付絶対表記・PII/鍵禁止）。
+
+## AI同士の連絡（ピック↔キュウチャ↔全AI）
+`python 40_Infrastructure/ai_msg.py` が共通の連絡窓口（実体=`00_Shared_Context/agent_chat.json`／オーナーは http://127.0.0.1:****/board で全会話を閲覧）。
+- 読む: `python 40_Infrastructure/ai_msg.py inbox`（自分宛の新着。作業の**開始時と完了時**に必ず確認）
+- 送る: `python 40_Infrastructure/ai_msg.py send --to codex --body "..."`（宛先= pick / codex / qj / hermes / anje / all）
+- 待つ: `python 40_Infrastructure/ai_msg.py watch --timeout 600`（返事待ち）／ 名簿: `ai_msg.py agents`
+- 自分の名前は自動判定。効かない環境では `--from <自分>` を付ける。長い経緯は共有メモリに書き、連絡は要点だけ。
+
+## 全AIの作業共有（キュウチャを含む）
+- 着手前に `SHARED_MEMORY.md` の直近・対象関連項目と対象ファイルの差分を確認する。
+- 着手・重要変更・完了・中断時に共有メモリへ追記する（日付時刻JST／担当AI／対象・目的／状態／変更ファイル／検証結果／残件・次の一手）。未実施項目は「未実施」と書く。
+- 同じ対象で他AIが作業中なら記録と実ファイルを照合し、競合する変更の前に担当を確認する。古い記録だけで稼働中と断定しない。
+- 会話や専用メモリだけで完結させない。長文は既存の `session_insights/` に置き、共有メモリには参照先を残す。
 
 ## 深掘りの地図（必要時に各自参照）
 - 全体の入口・現状・稼働サービス → `00_Shared_Context/START_HERE`
