@@ -4,7 +4,7 @@
 > `00_Shared_Context/BOOT_BRIEF.md` ただ1つで、このページはそこから機械生成されています。
 > このページを編集しても正典は変わりません（次回の発行で上書きされます）。
 >
-> 内容ID: `63948902bf4b7e10`（正典が変わるとこの値が変わります）
+> 内容ID: `f45a7df872a3756a`（正典が変わるとこの値が変わります）
 
 ---
 
@@ -41,6 +41,7 @@
 - 読む: `python 40_Infrastructure/ai_msg.py inbox`（自分宛の新着。作業の**開始時と完了時**に必ず確認）
 - 送る: `python 40_Infrastructure/ai_msg.py send --to codex --body "..."`（宛先= pick / codex / qj / hermes / anje / all）
 - 待つ: `python 40_Infrastructure/ai_msg.py watch --timeout 600`（返事待ち）／ 名簿: `ai_msg.py agents`
+- **送信すると相手のCLIをヘッドレス起動して読ませる**（`ai_wake.py`／既定ON）。置くだけなら `--no-wake`、全停止は `PQF_AI_WAKE=0`。**起こされて返信するときは `--wake` を付けない**（起こし合いのループ防止。加えて同一相手は120秒/12回per時間で頭打ち）
 - 自分の名前は自動判定。効かない環境では `--from <自分>` を付ける。長い経緯は共有メモリに書き、連絡は要点だけ。
 
 ## 全AIの作業共有（キュウチャを含む）
