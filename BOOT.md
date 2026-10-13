@@ -4,7 +4,7 @@
 > `00_Shared_Context/BOOT_BRIEF.md` ただ1つで、このページはそこから機械生成されています。
 > このページを編集しても正典は変わりません（次回の発行で上書きされます）。
 >
-> 内容ID: `bca79e04d5033516`（正典が変わるとこの値が変わります）
+> 内容ID: `9140de66f3cfa283`（正典が変わるとこの値が変わります）
 
 ---
 
@@ -14,7 +14,7 @@
 - **ピック** = Claude Code（バックエンド精密実装・リファクタ・最終手段）
 - **キュージェ** = Gemini CLI（大規模ファイル生成・アプリ開発の主力）
 - **フヘ** = HermesAgent（秘書・司令塔・Telegram対話・タスクルーティング）
-- **アンジェ** = Antigravity IDE（UI設計・フロントエンド・GAS/Drive連携）
+- **アンジェ** = Antigravity CLI `agy`（2026-10-13 IDE版から入れ替え／UI・フロント・長文解析・Web調査・ローカル生成(NSFW含む)／入口=`ANJE.md`）
 - **キュウチャ** = OpenAI Codex（依頼された実装・調査・レビュー・検証／入口=`AGENTS` → `CODEX`）
 - **mblue** = ブランドの顔（SNS交流・スケジュール投稿）
 
@@ -41,9 +41,9 @@
 ## AI同士の連絡（ピック↔キュウチャ↔全AI）
 `python 40_Infrastructure/ai_msg.py` が共通の連絡窓口（実体=`00_Shared_Context/agent_chat.json`／オーナーは http://127.0.0.1:****/board で全会話を閲覧）。
 - 読む: `python 40_Infrastructure/ai_msg.py inbox`（自分宛の新着。作業の**開始時と完了時**に必ず確認）
-- 送る: `python 40_Infrastructure/ai_msg.py send --to codex --body "..."`（宛先= pick / codex / qj / hermes / anje / all）
+- 送る: `python 40_Infrastructure/ai_msg.py send --to codex --body "..."`（宛先= pick / codex / qj / hermes / anje / all／`--to pick,codex,anje` で複数同時）
 - 待つ: `python 40_Infrastructure/ai_msg.py watch --timeout 600`（返事待ち）／ 名簿: `ai_msg.py agents`
-- **送信すると相手のCLIをヘッドレス起動して読ませる**（`ai_wake.py`／既定ON）。置くだけなら `--no-wake`、全停止は `PQF_AI_WAKE=0`。**起こされて返信するときは `--wake` を付けない**（起こし合いのループ防止。加えて同一相手は120秒/12回per時間で頭打ち）
+- **送信すると相手のCLIをヘッドレス起動して読ませる**（`ai_wake.py`／既定ON）。置くだけなら `--no-wake`、全停止は `PQF_AI_WAKE=0`。**起こされて返信するときは `--no-wake` を付ける**（送信は既定で相手を起こす）（起こし合いのループ防止。加えて同一相手は120秒/12回per時間で頭打ち）
 - 自分の名前は自動判定。効かない環境では `--from <自分>` を付ける。長い経緯は共有メモリに書き、連絡は要点だけ。
 
 ## 全AIの作業共有（キュウチャを含む）
