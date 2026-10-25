@@ -4,7 +4,7 @@
 > `00_Shared_Context/BOOT_BRIEF.md` ただ1つで、このページはそこから機械生成されています。
 > このページを編集しても正典は変わりません（次回の発行で上書きされます）。
 >
-> 内容ID: `757b8b005927f5e3`（正典が変わるとこの値が変わります）
+> 内容ID: `ea3d1dc54a049cd2`（正典が変わるとこの値が変わります）
 
 ---
 
@@ -64,6 +64,7 @@
 ## AIモデル名は現役の正典で書く（全AI共通・2026-10-25）
 - 学習知識のモデル名は古い（例: 「Gemini 1.5 Proが最新」は誤り）。AIモデル・クラウド製品の名前は `00_Shared_Context/CURRENT_AI_MODELS` だけを根拠に書く（毎朝6:00に実在の一覧から自動更新）。オーナーが「古い」と言ったら、そのモデルを推し直さず現役モデルに置き換える。
 - **コードにモデル名を直書きしない**。PQF内のコードは `40_Infrastructure/model_facts.py` の `latest("gemini_flash")` 等（このキーで実際に応答した最新版）を使う。販売用アプリは `os.getenv("GEMINI_MODEL", "gemini-flash-latest")`。
+- **Telegramの応答モデルは固定**（既定: ピック=Opus 5／キュウチャ=GPT-5.6-Sol／アンジェ=3.8 Flash）。Telegramで「〇〇のモデルを△△に切り替えて」と指示された時だけ変わり、そのまま固定（`ai_model_router.handle_model_command`／保存先 `40_Infrastructure/data/telegram_models.json`）。返答の末尾には使ったモデル名が付く。
 
 ## 成果物リンクの提示（全AI共通・2026-10-16）
 - ローカル成果物は実在確認後、`python 40_Infrastructure/shortlink.py <元ファイル> --name=<短い英数字名>` を実行し、出力された短いfile URLを単独行で提示する。長い元パス・コードブロックで代用しない。元ファイルの削除・移動はしない。Telegramではリンクだけで済ませず、既存の実ファイル添付手順を使う。
