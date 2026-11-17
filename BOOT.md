@@ -4,7 +4,7 @@
 > `00_Shared_Context/BOOT_BRIEF.md` ただ1つで、このページはそこから機械生成されています。
 > このページを編集しても正典は変わりません（次回の発行で上書きされます）。
 >
-> 内容ID: `c982a2dbaea8b6e8`（正典が変わるとこの値が変わります）
+> 内容ID: `ca6282fd668414b8`（正典が変わるとこの値が変わります）
 
 ---
 
@@ -44,7 +44,7 @@
   - **本人度の合否は必ず数値で確かめる**: `python .claude/skills/h3-adult-video-prompt/scripts/facelock.py score --ref <rei|jura|yua|mao> <画像>`。**0.80以上で合格**（別人は0.3未満）。測らずに「本人再現を確認」と書かない。
   - **テキストエンコーダ**: 最高画質の公式版 **int8（`qwen3vl_32b_minimax_h3_int8_convrot`・27.1GB）** を固定採用。
   - **出力**: 約400万画素（`1728x2304` 等の3:4高精細）の **完全な生画像（Raw）** を納品する。
-  - **肌質・表現**: チーク（頬紅・赤らみ）を完全排除した陶器肌（`fair, porcelain-clear skin completely free of blush, rouge, or cheek redness`）、生々しい毛穴・産毛強調の排除、自然で愛らしい微笑み・潤んだ大きな瞳。
+  - **肌質・表現**: チーク（頬紅・赤らみ）を完全排除した陶器肌（`fair, porcelain-clear skin completely free of blush, rouge, or cheek redness`）、**顔・首のほくろ・シミ・そばかすの完全禁止**（`completely free of any moles, beauty marks, freckles, or dark spots`・ほくろのある参照画像は使わない）、生々しい毛穴・産毛強調の排除、自然で愛らしい微笑み・潤んだ大きな瞳。
   - **日次運用への適用**: 2026-11-15 以降の日次美女生成・Instagram選定候補・個別美女生成はこのH3-Image一本方式で作成する。
 
 ## 今の最優先（WHAT NOW）
