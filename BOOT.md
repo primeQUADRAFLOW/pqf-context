@@ -4,7 +4,7 @@
 > `00_Shared_Context/BOOT_BRIEF.md` ただ1つで、このページはそこから機械生成されています。
 > このページを編集しても正典は変わりません（次回の発行で上書きされます）。
 >
-> 内容ID: `c12c8b635244ebaa`（正典が変わるとこの値が変わります）
+> 内容ID: `89adb4e02b160c84`（正典が変わるとこの値が変わります）
 
 ---
 
@@ -38,15 +38,14 @@
 - **「指定時はその通りに作る」**: オーナーから4美女の明示的な指定（「yuaで」「4美女を使って」等）があった場合は、指示・指定通りに4美女を使用して動画・画像を確実に制作する。
 - **過去の「動画に使用しない／絶対使用禁止」は誤認の元なので削除・撤廃**: 「4美女は動画に使用しない」という全面禁止ルールは存在しない。誤認を招く過去の記述は無効。
 - **Instagramに出す3美女の線（2026-11-12 オーナー指示）**: **maoは完全SFW**（谷間・水着・下着は不可）。**rei・juraはランジェリー・谷間・水着まで可**（NSFWは不可）。juraはIGでは暗い茶髪（2026-10-27分以降の画像）に揃える。1投稿は同じ場面の2〜3枚（悪い1枚は外して2枚で出す）。手足・撮り方・人物が不自然な画像は出さない。投稿の入口はApp65（関所で機械的に停止）。**各垢は「その子1人のアカウント」として見せる**＝キャプション・告知で人数（3人等）や他の垢名・他の子の画像を出さない（オーナー指示 2026-11-13）。**例外は @pqf_mblue だけ＝ハブ役として他垢の紹介・メンション可**（オーナー決定 2026-11-15。3美女の垢側は従来どおり）。**@pqf_mblue は毎日21:00に1件**＝`10_Projects/App35_mblue/mblue_daily_post.py`（タスク `PQF_mblue_DailyPost`・キュー `daily_queue/pending/`・App65とは独立・mblue画像は正規デザインのみ）。告知は文字だけの「会えるAI美女 始動」（build_ig_story.py aeru_launch）。動画も投稿する（声なし・音楽なし）。**週次（オーナー決定A・2026-11-13）**: 毎週木曜10:00に `PQF_IG3_Weekly` がピックを起こし `10_Projects/App65_BeautyInstaSelector/WEEKLY_RUNBOOK.md` の手順で翌週分の候補をTelegramに送ってOK待ち。オーナーの「IG OK」等を受けたら `python 10_Projects/App65_BeautyInstaSelector/tools/weekly_ig.py approve` で予約（OK前に予約しない）。
-- **美女画像生成の新正典（2026-11-15 夜 オーナー是正・H3-Image一本化）**:
-  - **エンジン**: ローカルComfyUI 8188（無料）の **MiniMax H3-Image 一本（`denoise=1.0`・新規生成）** を正典とする。**Krea2の下地＋低denoiseリマスター（画質が甘くなる）・顔LoRAは使わない**。
-  - **本人再現（顔LoRA不要）**: 対象キャラの顔クロップ（1〜1.5MP）＋正本写真複数枚（4MP）を `MiniMaxH3ImageConditioning` の参照画像（`images.image_1..N`）として直接渡し、プロンプトで `<Picture 1..N>` の `<Subject 1>` 同一性を指定する。
-  - **新しい構図（昨日の写真と同じポーズにしない）＝ポーズ提供元方式＋FaceLock仕上げ（2026-11-16 ピック実測で再確認）**: 文章だけで新しいポーズを指示すると本人度（ArcFace cos）は **0.32〜0.50 止まり＝別人**（2026-11-15 の rei 0.498 / jura 0.385、2026-11-16 の再現も同じ）。欲しい構図・服・場所が写った**ポーズ提供元の画像**を `image_1`、顔クロップを `image_2`、正本写真を `image_3..` に渡す `10_Projects/App_C02_GenStudio/ai_beauty/h3_pose_swap.py` で作り、**FaceLock（inswapper・CPU）で合格線0.80へ仕上げる**。1巡目の仕上がり（0.81前後）を**もう一度ポーズ提供元にして2巡目を回す**と生の本人度が 0.36→0.65 / 0.47→0.76 まで上がり、顔の貼り付き・継ぎ目が消える（最終 rei 0.813 / jura 0.810）。**FaceLock後処理は「使わない」ではなく、新構図では必須**（使わないのは顔LoRAとKrea2下地）。
-  - **本人度の合否は必ず数値で確かめる**: `python .claude/skills/h3-adult-video-prompt/scripts/facelock.py score --ref <rei|jura|yua|mao> <画像>`。**0.80以上で合格**（別人は0.3未満）。測らずに「本人再現を確認」と書かない。
+- **美女画像生成の新正典（2026-11-18 オーナー是正・H3-Image int8 単体一本化）**:
+  - **エンジン・パラメータ**: ローカルComfyUI 8188（無料）の **MiniMax H3-Image int8 単体（`denoise=1.0`, `cfg=1.25`, `steps=6`, `euler/simple`, `neg_cond`＋同画像参照 `neg_with_refs=True`）** を正典とする（`10_Projects/App_C02_GenStudio/ai_beauty/gen_h3_image.py` / `daily_beauty.py`）。**Krea2下地・顔LoRA・FaceLock後処理（inswapper）は使わない**。
+  - **本人再現・参照構成**: `image_1`＝クリーン正本（4.0MP）、`image_2`＝顔クロップ（1.2MP）、`image_3`＝クリーン正本2枚目（2.5MP）を `MiniMaxH3ImageConditioning` に直接渡し、プロンプトで `<Picture 1..3>` の `<Subject 1>` / `<Subject 2>` 同一性を固定する。**`mao` の第1正本は額短め正規版 `31_Media/ai_beauty_daily/mao/20261118/mao_20261118_canon_short_forehead.png` を固定使用**（2026-11-18 オーナー決定・元の長い額に戻さない）。
+  - **本人度の確認**: `python .claude/skills/h3-adult-video-prompt/scripts/facelock.py score --ref <rei|jura|yua|mao> <画像>` または `best_sim` で ArcFace 類似度を必ず実測して台帳へ記録する（H3-Image単体・新構図の合格目安 `0.65` 以上／ポーズ提供元方式 `h3_pose_swap.py` を使う別ポーズ差し替え時のみ FaceLock 0.80 を許容）。測らずに「本人再現を確認」と書かない。
   - **テキストエンコーダ**: 最高画質の公式版 **int8（`qwen3vl_32b_minimax_h3_int8_convrot`・27.1GB）** を固定採用。
   - **出力**: 約400万画素（`1728x2304` 等の3:4高精細）の **完全な生画像（Raw）** を納品する。
-  - **肌質・表現**: チーク（頬紅・赤らみ）を完全排除した陶器肌（`fair, porcelain-clear skin completely free of blush, rouge, or cheek redness`）、**顔・首のほくろ・シミ・そばかすの完全禁止**（`completely free of any moles, beauty marks, freckles, or dark spots`・ほくろのある参照画像は使わない）、生々しい毛穴・産毛強調の排除、自然で愛らしい微笑み・潤んだ大きな瞳。
-  - **日次運用への適用**: 2026-11-15 以降の日次美女生成・Instagram選定候補・個別美女生成はこのH3-Image一本方式で作成する。
+  - **肌質・表現・ネガティブ**: チーク（頬紅・赤らみ）を完全排除した自然な陶器肌（白浮き・白飛び抑制）、**顔・首のほくろ・シミ・そばかすの完全禁止**（`completely free of any moles, beauty marks, freckles, or dark spots`・ほくろのある参照画像は使わない）、シワ・ほうれい線・長い額/広い額をネガティブプロンプト＋同画像参照（`neg_with_refs=True`）で抑止する。
+  - **日次運用への適用**: 2026-11-18 以降の日次美女生成（`daily_beauty.py`）・Instagram選定候補・個別美女生成はこの H3-Image int8 単体方式で作成する。
 
 ## 今の最優先（WHAT NOW）
 - 稼働サービスを健全に保つ（pqf_brain_proxy:**** / content_poster:**** / フヘ常駐 等）
