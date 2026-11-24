@@ -4,7 +4,7 @@
 > `00_Shared_Context/BOOT_BRIEF.md` ただ1つで、このページはそこから機械生成されています。
 > このページを編集しても正典は変わりません（次回の発行で上書きされます）。
 >
-> 内容ID: `89adb4e02b160c84`（正典が変わるとこの値が変わります）
+> 内容ID: `7c22a315d59d8a68`（正典が変わるとこの値が変わります）
 
 ---
 
@@ -38,14 +38,13 @@
 - **「指定時はその通りに作る」**: オーナーから4美女の明示的な指定（「yuaで」「4美女を使って」等）があった場合は、指示・指定通りに4美女を使用して動画・画像を確実に制作する。
 - **過去の「動画に使用しない／絶対使用禁止」は誤認の元なので削除・撤廃**: 「4美女は動画に使用しない」という全面禁止ルールは存在しない。誤認を招く過去の記述は無効。
 - **Instagramに出す3美女の線（2026-11-12 オーナー指示）**: **maoは完全SFW**（谷間・水着・下着は不可）。**rei・juraはランジェリー・谷間・水着まで可**（NSFWは不可）。juraはIGでは暗い茶髪（2026-10-27分以降の画像）に揃える。1投稿は同じ場面の2〜3枚（悪い1枚は外して2枚で出す）。手足・撮り方・人物が不自然な画像は出さない。投稿の入口はApp65（関所で機械的に停止）。**各垢は「その子1人のアカウント」として見せる**＝キャプション・告知で人数（3人等）や他の垢名・他の子の画像を出さない（オーナー指示 2026-11-13）。**例外は @pqf_mblue だけ＝ハブ役として他垢の紹介・メンション可**（オーナー決定 2026-11-15。3美女の垢側は従来どおり）。**@pqf_mblue は毎日21:00に1件**＝`10_Projects/App35_mblue/mblue_daily_post.py`（タスク `PQF_mblue_DailyPost`・キュー `daily_queue/pending/`・App65とは独立・mblue画像は正規デザインのみ）。告知は文字だけの「会えるAI美女 始動」（build_ig_story.py aeru_launch）。動画も投稿する（声なし・音楽なし）。**週次（オーナー決定A・2026-11-13）**: 毎週木曜10:00に `PQF_IG3_Weekly` がピックを起こし `10_Projects/App65_BeautyInstaSelector/WEEKLY_RUNBOOK.md` の手順で翌週分の候補をTelegramに送ってOK待ち。オーナーの「IG OK」等を受けたら `python 10_Projects/App65_BeautyInstaSelector/tools/weekly_ig.py approve` で予約（OK前に予約しない）。
-- **美女画像生成の新正典（2026-11-18 オーナー是正・H3-Image int8 単体一本化）**:
-  - **エンジン・パラメータ**: ローカルComfyUI 8188（無料）の **MiniMax H3-Image int8 単体（`denoise=1.0`, `cfg=1.25`, `steps=6`, `euler/simple`, `neg_cond`＋同画像参照 `neg_with_refs=True`）** を正典とする（`10_Projects/App_C02_GenStudio/ai_beauty/gen_h3_image.py` / `daily_beauty.py`）。**Krea2下地・顔LoRA・FaceLock後処理（inswapper）は使わない**。
-  - **本人再現・参照構成**: `image_1`＝クリーン正本（4.0MP）、`image_2`＝顔クロップ（1.2MP）、`image_3`＝クリーン正本2枚目（2.5MP）を `MiniMaxH3ImageConditioning` に直接渡し、プロンプトで `<Picture 1..3>` の `<Subject 1>` / `<Subject 2>` 同一性を固定する。**`mao` の第1正本は額短め正規版 `31_Media/ai_beauty_daily/mao/20261118/mao_20261118_canon_short_forehead.png` を固定使用**（2026-11-18 オーナー決定・元の長い額に戻さない）。
-  - **本人度の確認**: `python .claude/skills/h3-adult-video-prompt/scripts/facelock.py score --ref <rei|jura|yua|mao> <画像>` または `best_sim` で ArcFace 類似度を必ず実測して台帳へ記録する（H3-Image単体・新構図の合格目安 `0.65` 以上／ポーズ提供元方式 `h3_pose_swap.py` を使う別ポーズ差し替え時のみ FaceLock 0.80 を許容）。測らずに「本人再現を確認」と書かない。
-  - **テキストエンコーダ**: 最高画質の公式版 **int8（`qwen3vl_32b_minimax_h3_int8_convrot`・27.1GB）** を固定採用。
-  - **出力**: 約400万画素（`1728x2304` 等の3:4高精細）の **完全な生画像（Raw）** を納品する。
-  - **肌質・表現・ネガティブ**: チーク（頬紅・赤らみ）を完全排除した自然な陶器肌（白浮き・白飛び抑制）、**顔・首のほくろ・シミ・そばかすの完全禁止**（`completely free of any moles, beauty marks, freckles, or dark spots`・ほくろのある参照画像は使わない）、シワ・ほうれい線・長い額/広い額をネガティブプロンプト＋同画像参照（`neg_with_refs=True`）で抑止する。
-  - **日次運用への適用**: 2026-11-18 以降の日次美女生成（`daily_beauty.py`）・Instagram選定候補・個別美女生成はこの H3-Image int8 単体方式で作成する。
+- **美女画像生成の正典（2026-11-24 オーナー決定・LoRA 方式へ差し戻し／2026-11-25 05:00 の日次から有効）**:
+  - **エンジン**: ローカルComfyUI 8188（無料）。**既定は LoRA 方式**＝1枚目 **Krea2＋顔LoRA**（`realism_portrait.make`・method `krea2`）、同じ場面の2・3枚目は1枚目を参照画像にした **Qwen-Image-Edit 2511**（method `qwen_edit_from_1`・服を完全に揃える）。本番は `10_Projects/App_C02_GenStudio/ai_beauty/daily_beauty.py`（`DEFAULT_ENGINE = "krea2"` 固定・環境変数での切替は廃止）。
+  - **H3-Image は明示時のみ**: `daily_beauty.py run --engine=h3` を手で付けた時だけ使う手動用（コードは残置）。日次・Instagram選定候補・個別美女生成の既定にしない。H3 を使う時の `mao` 第1正本は額短め正規版 `31_Media/ai_beauty_daily/mao/20261118/mao_20261118_canon_short_forehead.png`（2026-11-18 オーナー決定・元の長い額に戻さない）。
+  - **FaceLock は全面禁止（2026-11-23 オーナー決定・品質劣化のため）**: `lock_min` 等の顔寄せ後処理（inswapper による顔差し替え・混合）はどの経路でも使わない。日次から `realism_portrait.make` を呼ぶ時は必ず `facelock=False` を渡す（同関数の既定 `True` は他スクリプト用で日次には使わない）。
+  - **本人度の確認と合格ライン**: FaceLock なしの**生の** ArcFace 一致度を `best_sim`（または `python .claude/skills/h3-adult-video-prompt/scripts/facelock.py score --ref <rei|jura|yua|mao> <画像>`＝採点だけ・顔は変えない）で必ず実測して台帳へ記録する。**合格ラインは生 `0.65`**（`LORA_RAW_PASS`・下げない）。旧 0.80 は FaceLock 仕上げ後の値なので使わない。未達は乱数を変えて作り直し（1枚あたり `MAX_ATTEMPTS = 2` 回・良い方を採用・届かなければ `pass=false` で記録）。測らずに「本人再現を確認」と書かない。
+  - **日次の段取り**: 生成順 `rei → jura → mao → yua`、1人12枚×4人＝48枚/日、時間枠ガード7.5時間。
+  - **肌質**: 顔・首のほくろ・シミ・そばかすは出さない（Qwen-Edit 側は `free of moles, freckles, or dark spots` を指示済み）。チーク（頬紅・赤らみ）・シワ・ほうれい線・長い額も避ける。
 
 ## 今の最優先（WHAT NOW）
 - 稼働サービスを健全に保つ（pqf_brain_proxy:**** / content_poster:**** / フヘ常駐 等）
